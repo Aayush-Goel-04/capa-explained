@@ -1,6 +1,6 @@
-# CAPA-doc
+# CAPA-doc 
 ## How CAPA Works
-CAPA is an open-source tool developed by the FLARE team to identify capabilities in executable files.
+CAPA is an open-source tool developed by the FLARE team to identify capabilities in executable files. Here's the github repo link for capa https://github.com/mandiant/capa.
 
 ### Usage:
 
@@ -88,3 +88,17 @@ $ capa.exe suspicious.exe
 | persist via Windows service                           | persistence/service                             |
 +-------------------------------------------------------+-------------------------------------------------+
 ```
+
+# further information
+## capa
+- [Installation](https://github.com/mandiant/capa/blob/master/doc/installation.md)
+- [Usage](https://github.com/mandiant/capa/blob/master/doc/usage.md)
+- [Limitations](https://github.com/mandiant/capa/blob/master/doc/limitations.md)
+- [Contributing Guide](https://github.com/mandiant/capa/blob/master/.github/CONTRIBUTING.md)
+
+## capa rules
+- [capa-rules repository](https://github.com/mandiant/capa-rules)
+- [capa-rules rule format](https://github.com/mandiant/capa-rules/blob/master/doc/format.md)
+
+## capa testfiles
+The [capa-testfiles repository](https://github.com/mandiant/capa-testfiles) contains the data we use to test capa's code and rules
