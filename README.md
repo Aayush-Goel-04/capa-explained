@@ -89,16 +89,5 @@ $ capa.exe suspicious.exe
 +-------------------------------------------------------+-------------------------------------------------+
 ```
 
-# further information
-## capa
-- [Installation](https://github.com/mandiant/capa/blob/master/doc/installation.md)
-- [Usage](https://github.com/mandiant/capa/blob/master/doc/usage.md)
-- [Limitations](https://github.com/mandiant/capa/blob/master/doc/limitations.md)
-- [Contributing Guide](https://github.com/mandiant/capa/blob/master/.github/CONTRIBUTING.md)
-
-## capa rules
-- [capa-rules repository](https://github.com/mandiant/capa-rules)
-- [capa-rules rule format](https://github.com/mandiant/capa-rules/blob/master/doc/format.md)
-
-## capa testfiles
-The [capa-testfiles repository](https://github.com/mandiant/capa-testfiles) contains the data we use to test capa's code and rules
+# Further Information
+for further information visit CAPA's official repo https://github.com/mandiant/capa
