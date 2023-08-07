@@ -1,52 +1,46 @@
 # CAPA-doc
-## How capa works
-```
-The FLARE team's open-source tool to identify capabilities in executable files.
+## How CAPA Works
+CAPA is an open-source tool developed by the FLARE team to identify capabilities in executable files.
 
-positional arguments:
-  sample                path to sample to analyze
+### Usage:
 
-optional arguments:
-  -h, --help            show this help message and exit
-  --version             show program's version number and exit
-  -v, --verbose         enable verbose result document (no effect with --json)
-  -vv, --vverbose       enable very verbose result document (no effect with --json)
-  -d, --debug           enable debugging output on STDERR
-  -q, --quiet           disable all output but errors
-  --color {auto,always,never}
-                        enable ANSI color codes in results, default: only during interactive session
-  -f {auto,pe,dotnet,elf,sc32,sc64,freeze}, --format {auto,pe,dotnet,elf,sc32,sc64,freeze}
-                        select sample format, auto: (default) detect file type automatically, pe: Windows PE file, dotnet: .NET PE file, elf: Executable and Linkable Format, sc32:
-                        32-bit shellcode, sc64: 64-bit shellcode, freeze: features previously frozen by capa
-  -b {vivisect,binja,pefile}, --backend {vivisect,binja,pefile}
-                        select the backend to use
-  --os {auto,linux,macos,windows}
-                        select sample OS: auto (detect OS automatically - default), linux, macos, windows
-  -r RULES, --rules RULES
-                        path to rule file or directory, use embedded rules by default
-  -s SIGNATURES, --signatures SIGNATURES
-                        path to .sig/.pat file or directory used to identify library functions, use embedded signatures by default
-  -t TAG, --tag TAG     filter on rule meta field values
-  -j, --json            emit JSON instead of text
-```
+### Positional Arguments:
+- `sample`: Path to the sample file you want to analyze.
 
-## Specifiying file format
-If format is not specified the file format is found by reading the starting bytes of sample file.
+### Optional Arguments:
+- `-h, --help`: Show this help message and exit.
+- `--version`: Show the program's version number and exit.
+- `-v, --verbose`: Enable verbose result document (no effect with --json).
+- `-vv, --vverbose`: Enable very verbose result document (no effect with --json).
+- `-d, --debug`: Enable debugging output on STDERR.
+- `-q, --quiet`: Disable all output but errors.
+- `--color {auto,always,never}`: Enable ANSI color codes in results. Default: enabled only during an interactive session.
+- `-f {auto,pe,dotnet,elf,sc32,sc64,freeze}, --format {auto,pe,dotnet,elf,sc32,sc64,freeze}`: Select the sample format. Default: auto, which detects the file type automatically. Other options include pe (Windows PE file), dotnet (.NET PE file), elf (Executable and Linkable Format), sc32 (32-bit shellcode), sc64 (64-bit shellcode), and freeze (features previously frozen by capa).
+- `-b {vivisect,binja,pefile}, --backend {vivisect,binja,pefile}`: Select the backend to use for feature extraction. Options include vivisect (default), binja, and pefile.
+- `--os {auto,linux,macos,windows}`: Select the sample's operating system. Default: auto, which detects the OS automatically. Other options include linux, macos, and windows.
+- `-r RULES, --rules RULES`: Path to a rule file or directory. If not specified, CAPA uses the default embedded rules.
+- `-s SIGNATURES, --signatures SIGNATURES`: Path to a .sig/.pat file or directory used to identify library functions. If not specified, CAPA uses the default embedded signatures.
+- `-t TAG, --tag TAG`: Filter on rule meta field values.
+- `-j, --json`: Emit JSON instead of text.
+
+## Specifying the File Format
+If the format is not specified, CAPA automatically determines the file format by reading the starting bytes of the sample file.
 
 ## Loading Rules
-A `RuleSet: List[Rule]` is created from the default rules paths if not specified. [What are Rules.](https://github.com/mandiant/capa-rules/blob/master/doc/format.md)
+CAPA creates a `RuleSet: List[Rule]` from the default rule paths if none are specified. To learn more about rules, visit the [CAPA Rules Format Documentation](https://github.com/mandiant/capa-rules/blob/master/doc/format.md).
 
-## Extracting file metadata and capabilities
-We must create an extractor and use that to extract meta and capabilities, we must create an extractor, such as viv, binary ninja, etc. workspaces and use those for extracting.
+## Extracting File Metadata and Capabilities
+To extract file metadata and capabilities, follow these steps:
 
--  Loading FLIRT Signatures : If file is PE format get signatures from signature files. This helps us do library code matching by having symbol matching.
-Exampe FLIRT signature for `strcmp`: `55 8B EC 83 EC 0C 8B 45 08 8B 4D 0C 8B 55 10 83 F9 00 75 17 0F B6 01 3A 45 0C 74 0A 3A 01 75 05 83 C0 01 5D C3`
-- Get Extractor : A feature extractor is created based on file format. [vivisect](https://github.com/vivisect/vivisect) is the default debugger framework used for extracting file capabilities. capa is also compatible with IDAPro for feature extraction. [viv-utils](https://github.com/williballenthin/viv-utils) is a utilities module for working with vivisect. It provides us with functionalities of vivisect to get function handles from sample binary file.
-- Collect MetaData : Basic file info (like file hashes, os, format, arch and path of rules to be used for analysis) is loaded into a Meta Data Type.
-- Finding Capabilities : It takes a ruleset and a feature_extractor, and returns a tuple of (matches, meta), where: it first finds all capabilities within functions, basic blocks, and instructions. It then collects all rule matches across all scopes, and finds all capabilities in files. Finally, it returns the matches and metadata.
+1. Create an appropriate feature extractor, such as Vivisect, Binary Ninja, or other compatible workspaces, and use it for extracting capabilities.
+2. For PE format files, CAPA retrieves signatures from signature files (FLIRT Signatures). These signatures enable library code matching through symbol matching. For example, a FLIRT signature for `strcmp` might look like this: `55 8B EC 83 EC 0C 8B 45 08 8B 4D 0C 8B 55 10 83 F9 00 75 17 0F B6 01 3A 45 0C 74 0A 3A 01 75 05 83 C0 01 5D C3`.
+3. CAPA creates a feature extractor based on the file format. The default debugger framework used for extraction is [Vivisect](https://github.com/vivisect/vivisect), but CAPA is also compatible with IDAPro for feature extraction. The [viv-utils](https://github.com/williballenthin/viv-utils) module provides functionalities to retrieve function handles from sample binary files.
+4. Basic file information, such as file hashes, operating system, format, architecture, and the path of rules used for analysis, is loaded into a Meta Data Type.
+5. CAPA finds capabilities by taking a ruleset and a feature extractor as input and returns a tuple of (matches, meta). It first identifies all capabilities within functions, basic blocks, and instructions. Then, it collects all rule matches across all scopes and identifies all capabilities in the files. Finally, it returns the matches and metadata.
 
-## Results
-The capabilities found using extractor are rendered and displayed to user.
+## Result
+Analysis done in above steps is then rendered to user. example :
+
 ```
 $ capa.exe suspicious.exe
 
