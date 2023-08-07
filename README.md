@@ -1,4 +1,15 @@
-# CAPA-doc 
+# Personal Explanation of CAPA (https://github.com/mandiant/capa)
+
+Welcome to my personal documentation of CAPA, an open-source tool developed by the FLARE team to identify capabilities in executable files. This document serves as my personal reference and understanding of how CAPA works and its various functionalities.
+
+CAPA is an incredibly powerful and flexible tool, and through this documentation, I aim to explore its features, usage, and intricacies in a detailed manner. As I work with CAPA, I will take notes, record my findings, and provide examples to better comprehend its capabilities.
+
+Please note that this documentation is not an official guide or part of the official CAPA project. It is solely for my personal use, to enhance my understanding of the tool and share my insights with the community.
+
+If you are interested in the official CAPA project, please visit their GitHub repository: https://github.com/mandiant/capa. The official documentation and resources there will provide you with a comprehensive overview and official support for CAPA.
+
+Feel free to explore this documentation and join me on this learning journey with CAPA!
+
 ## How CAPA Works
 CAPA is an open-source tool developed by the FLARE team to identify capabilities in executable files. Here's the github repo link for capa https://github.com/mandiant/capa.
 
