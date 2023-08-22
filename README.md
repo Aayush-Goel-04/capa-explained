@@ -38,7 +38,37 @@ CAPA is an open-source tool developed by the FLARE team to identify capabilities
 If the format is not specified, CAPA automatically determines the file format by reading the starting bytes of the sample file.
 
 ## Loading Rules
-CAPA creates a `RuleSet: List[Rule]` from the default rule paths if none are specified. To learn more about rules, visit the [CAPA Rules Format Documentation](https://github.com/mandiant/capa-rules/blob/master/doc/format.md).
+CAPA creates a `RuleSet: List[Rule]` from the default rule paths if none are specified. To learn more about rules, visit the [CAPA Rules Format Documentation](https://github.com/mandiant/capa-rules/blob/master/doc/format.md). Example rule :
+
+```yaml
+rule:
+  meta:
+    name: hash data with CRC32
+    namespace: data-manipulation/checksum/crc32
+    authors:
+      - moritz.raabe@mandiant.com
+    scope: function
+    mbc:
+      - Data::Checksum::CRC32 [C0032.001]
+    examples:
+      - 2D3EDC218A90F03089CC01715A9F047F:0x403CBD
+      - 7D28CB106CB54876B2A5C111724A07CD:0x402350  # RtlComputeCrc32
+      - 7EFF498DE13CC734262F87E6B3EF38AB:0x100084A6
+  features:
+    - or:
+      - and:
+        - mnemonic: shr
+        - or:
+          - number: 0xEDB88320
+          - bytes: 00 00 00 00 96 30 07 77 2C 61 0E EE BA 51 09 99 19 C4 6D 07 8F F4 6A 70 35 A5 63 E9 A3 95 64 9E = crc32_tab
+        - number: 8
+        - characteristic: nzxor
+      - and:
+        - number: 0x8320
+        - number: 0xEDB8
+        - characteristic: nzxor
+      - api: RtlComputeCrc32
+```
 
 ## Extracting File Metadata and Capabilities
 To extract file metadata and capabilities, follow these steps:
